@@ -11,10 +11,10 @@ This is an example for Monolayer MoS2 gfactor at K.
    iiiv=NINT(nelec/2)+2
    (Currently this compiling process for different band index is not efficient)
 
-   (For very large system like 4x4 supercell of WSe2, the serial SOC calculation may fail due to large io files in disk.
+   (For very large system like a 4x4 supercell of WSe2, the serial SOC calculation may fail due to large io files in disk.
     You can add flag "disk_io=none" in QE input under "CONTROL" list.)
 
-2) If you need COHSEX g factor, you need to run all the folders:
+2) If you need the COHSEX g factor, you need to run the code in all the folders:
 
 a, QE/01-scf/scf.lsf
 b, QE/04-outer-normalized/qe.lsf
@@ -32,8 +32,8 @@ f, 07-epsilon/bgw.pbs
 g, rerun QE/04-gfactor-DFT with the new COHSEX eigenvalues
 h, 08-sigma-outer/
    check the outputs:CBM_sigma_hp.log VBM_sigma_hp.log 
-   These are to obtain: <du/dk|x[Sigma-Vxc]|du/dk> (remember multiply back the normalization factor from QE/04-outer-normalized/C(V)BM_write.out)
-   Use these results together with the results from step-g, we get COHSEX g-factor
+   These are to obtain: <du/dk|x[Sigma-Vxc]|du/dk> (remember to multiply back the normalization factor from QE/04-outer-normalized/C(V)BM_write.out)
+   Use these results together with the results from step-g to obtain the COHSEX g-factor.
 
 <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
 
