@@ -1,0 +1,21 @@
+number_bands 3999
+
+band_index_min 11
+band_index_max 15
+
+number_offdiag 2
+begin offdiag
+ 13  14  13
+ 14  13  14
+end
+
+screening_semiconductor
+
+cell_slab_truncation
+frequency_dependence 0
+subsample
+begin kpoints
+  0.333333333  0.333333333  0.000000000   1.0
+end
+eqp_outer_corrections
+no_symmetries_q_grid
