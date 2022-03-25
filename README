@@ -1,0 +1,72 @@
+This folder includes instructions for g-factor calculation on DFT and GW level.
+The calculation procedures are very simple and you may find some parts of the algorithm, code and script are not effecient.
+You can change accordingly after you understand the purpose of each step.
+
+1) DFT level using QuantumESPRESSO-6.1
+
+Our target is to calculate Eq.10 of Ref [arXiv:2002.11993], where the du/dk is evalated in Eq.12
+<du/dk|x[Hk-Enk]|du/dk>
+|du/dk> = (exp^{-i theta}|k+q> -|k>)/q
+exp^{i theta} = <k|k+q>/|<k|k+q>|
+
+So we need to calculate DFT wave function at K+qx, K+qy, K (K is the point at which g factor will be evaluated)
+The QE package outlines are in "QuantumESPRESSO_codestructure.txt". 
+You can read this document get a better understanding how QE works and why we modifiy c_bands.f90 
+Do the following to get gfactor:
+
+   a, set k list in the QE 'bands' calculation input: K+qx, K+qy, K. (qx = qy = 0.0001 or 0.00001)
+      (be careful that in this step we need this parameter to be high    conv_thr = 1.0d-10)
+
+      K_POINTS crystal
+        3
+      0.333353333  0.333323333  0.000000000   1.0
+      0.333333333  0.333343333  0.000000000   1.0
+      0.333333333  0.333333333  0.000000000   1.0
+
+   b, modify PW/src/c_bands.f90, which is the subroutine controls the calculation of the k list in input. Set 'iiiv' to be the band index. Compile QE.
+      remember set qx in c_bands.f90 according to the input k list.
+      the modification of c_bands.f90 is very simple. Just calcualte du/dkx and du/dky first and then evaluate <du/dk|x[Hk-Enk]|du/dk>
+   c, run pw.x < in > out.   In the "out", g factor and Berry curvature are output for band "iiiv" at "K".
+
+
+2) GW(COHSEX) level using QE-6.1 and BGW- (> = 1.2)
+
+The strategy is straight forward. Just use GW Hamiltonian and quasiparticle energies in <du/dk|x[Hk-Enk]|du/dk>.
+<du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk> 
+The second term is reduced to:
+2Im <du/dkx |[Sigma-Vxc]| du/dky>
+
+   a, prepare WFN and WFNq. do the standard GW calculation to get Enk(GW). 
+      calculate <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> using the QE code (remember replace Enk with GW in c_bands.f90)
+   b, prepare a WFN_kkxky.h5. Be careful that klist order is different here : K, K+qx, K+qy
+
+      K_POINTS crystal
+        3
+      0.333333333  0.333333333  0.000000000   1.0
+      0.333353333  0.333323333  0.000000000   1.0
+      0.333333333  0.333343333  0.000000000   1.0
+
+      remember after pw2bgw, transform the BIN format to hdf5 format by: wfn2hdf.x BIN WFN.complex WFN_kkxky.h5.
+   c, prepare a WFN_after_C(V)BM.complex using python script 'writedudk.py'. 
+      This script replace the wave function coeffecient of band index 13 and 14 band at K by du/dkx and du/dky.
+      the readin WFN_before.h5 is on the standard GW coarse grid (12x12 for TMD with subsample for example)
+      13 14 is for TMD where VBM = 13. For other materials change it accordingly.
+      Set ib to be Valence and Conduction band in 'writedudk.py' to get WFN_after_C(V)BM.complex.
+      (ib = 12 for valence and 13 for conduction, this is due to python array start from 0)
+      You may run the python script as :
+
+./writedudk.py WFN_kkxky.h5 WFN_before.h5 WFN_tempout.h5 WFN_after.h5 > CBM_write.out
+rm WFN_tempout.h5
+mv WFN_after.h5 WFN_after_CBM.h5
+hdf2wfn.x BIN WFN_after_CBM.h5 WFN_after_CBM.complex
+
+      Be careful that in the output ' CBM_write.out' there is normalization factor at the end.
+      We use this to normalized the du/dk and we will need to take it into account in the final step of 2Im <du/dkx |[Sigma-Vxc]| du/dky>
+
+   d, perform offdiag calculation using BGW for 2Im <du/dkx |[Sigma-Vxc]| du/dky>. 
+      link WFN_after_C(V)BM.complex to the WFN_outer
+      remember to get back the normalization factor, since du/dk has been normailzed. We need the origianal du/dk.
+      GW g factor is then obtained by summing the two contributions in the equation:
+
+<du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
+
