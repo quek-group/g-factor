@@ -1,0 +1,83 @@
+
+ frequency_dependence   0
+
+ band_index    11    15
+ sigma_matrix     0   0
+
+ finite_difference_form  -2
+
+ symmetries
+ ntran  = 12
+ mtrx01 =  1  0  0  0  1  0  0  0  1
+ mtrx02 = -1  1  0  0  1  0  0  0 -1
+ mtrx03 =  0 -1  0  1 -1  0  0  0  1
+ mtrx04 = -1  1  0 -1  0  0  0  0  1
+ mtrx05 =  0 -1  0 -1  0  0  0  0 -1
+ mtrx06 =  1  0  0  1 -1  0  0  0 -1
+ mtrx07 =  1  0  0  0  1  0  0  0 -1
+ mtrx08 = -1  1  0  0  1  0  0  0  1
+ mtrx09 = -1  1  0 -1  0  0  0  0 -1
+ mtrx10 =  0 -1  0  1 -1  0  0  0 -1
+ mtrx11 =  1  0  0  1 -1  0  0  0  1
+ mtrx12 =  0 -1  0 -1  0  0  0  0  1
+ 
+       k =  0.333333  0.333333  0.000000 ik =  31 spin = 1
+
+   n         Emf          Eo           X        SX-X          CH         Sig         Vxc        Eqp0        Eqp1       Znk
+  11   -3.538855   -3.538855  -16.215190   11.000470  -11.627989  -16.842708  -12.922072   -7.459492   -7.459492    1.000000
+  12   -2.849945   -2.849945  -17.433187   11.513073  -12.625762  -18.545875  -14.404590   -6.991230   -6.991230    1.000000
+  13   -0.623565   -0.623565  -16.110673    9.971499  -14.359395  -20.498569  -16.923374   -4.198760   -4.198760    1.000000
+  14    1.154886    1.154886  -16.099343    9.968207  -14.348508  -20.479643  -16.906774   -2.417984   -2.417984    1.000000
+  15    2.434117    2.434117  -10.098785    5.685630  -12.947291  -17.360447  -15.129868    0.203538    0.203538    1.000000
+
+   E2 = E0
+   n   m   l                     X    SX(E2)-X      CH(E2)     Sig(E2)         Vxc
+  13  14  13   real       0.007118   -0.002661    0.009600    0.014056    0.012359
+  13  14  13   imag     -12.164772    7.511212  -10.462311  -15.115871  -12.484527
+  14  13  14   real       0.007118   -0.002661    0.009280    0.013737    0.012359
+  14  13  14   imag      12.164772   -7.511212   10.462104   15.115664   12.484527
+ 
+
+================================================================================
+
+    n = band index.
+  Emf = "inner" mean-field energy eigenvalue used to construct Sigma(E),
+        read from WFN_inner.
+   Eo = "outer" mean-field energy eigenvalue where we center the evaluation
+        frequency grid {E} of Sigma(E). Defaults to Emf, unless
+        you use WFN_outer and eqp_outer.dat / scissors_outer.
+  Vxc = exchange-correlation pot., calculated from VXC or read from vxc.dat.
+    X = bare exchange.
+   SX = screened exchange contrib. to Sigma(E) at energy E=Eo
+   CH = Coulomb hole contrib. to Sigma(E) at energy E=Eo
+  Cor = SX-X + CH = correlation portion of Sigma(E) at energy E=Eo.
+  Sig = X + Cor = self energy, Sigma(E), at energy E=Eo.
+ Eqp0 = on-shell QP energy = Emf - Vxc + Sig(Eo)
+        Eqp0 is *not* the recommended quantity to use for QP properties.
+ Eqp1 = off-shell solution to the linearized  Dyson`s equation
+      = Eqp0 + (dSig/dE) / (1 - dSig/dE) * (Eqp0 - Eo),
+        or a full linear interpolation if more freq. points where computed.
+        Eqp1 is the recommended quantity to use for QP properties.
+  Znk = quasiparticle renormalization factor
+
+ Notes on the static remainder:
+ - Unprimed values, such as Eqp0, are evaluated WITH the static remainder
+ - Primed values, such as Eqp0`, are evaluated WITHOUT the static remainder
+
+ General notes:
+ - All energies are reported here in eV.
+ - Both Emf and Vxc contain the average pot. Vxc0, so Vxc0 doesn`t affect Sigma.
+ - Eqp1 and Eqp0 are Eqs. (36-37) from Hybertsen & Louie PRB 34 5390.
+ - We recommend you use Eqp1 for QP properties of materials.
+
+================================================================================
+
+    n = band index of bra wavefunction
+    m = band index of ket wavefunction
+    l = band index of energy eigenvalue
+
+ < psi_n(k) |      X      | psi_m(k) >
+ < psi_n(k) | SX(Eo_l(k)) | psi_m(k) >
+ < psi_n(k) | CH(Eo_l(k)) | psi_m(k) >
+ < psi_n(k) |     Vxc     | psi_m(k) >
+
