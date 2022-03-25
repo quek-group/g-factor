@@ -1,10 +1,20 @@
 Work done for this code was performed in the National University of Singapore (NUS).
+
+This folder includes instructions for the calculation of g-factors at the DFT and GW (COHSEX) levels according to Phys Rev Research 2, 033256 (2020).
+
 We ask that if you use or refer to this code for calculating g-factors (or Berry curvatures), that you please cite the following reference:
 
 Phys Rev Research 2, 033256 (2020)
 
-QuantumESPRESSO code is used in conjunction with this g-factor code. Please also cite the appropriate references for the QuantumESPRESSO code.
+Please note that an updated approach to incorporate self-energies into the calculation of the g-factors is presented in our recent paper
+- npj Computational Materials, 7, 198 (2021). Here, dynamical effects are included in the GW g-factors. 
+
+QuantumESPRESSO code is used in conjunction with this g-factor code. 
 QuantumESPRESSO is licensed under GNU GENERAL PUBLIC LICENSE.
+
+We also include code that is used in conjunction with the BerkeleyGW code. 
+The BerkeleyGW code is licensed under a free, open source, and permissive 3-clause modified BSD license. 
+BerkeleyGW, Copyright (c) 2011, The Regents of the University of California, through Lawrence Berkeley National Laboratory (subject to receipt of any required approvals from the U.S. Dept. of Energy). All rights reserved.
 
 Author: Xuan Fengyuan (c2dxf@nus.edu.sg)
 Contact: Su Ying Quek (phyqsy@nus.edu.sg)
@@ -12,13 +22,9 @@ Contact: Su Ying Quek (phyqsy@nus.edu.sg)
 ======================================================================================
 Instructions
 ======================================================================================
-This folder includes instructions for the calculation of g-factors at the DFT and GW levels according to 
-Phys Rev Research 2, 033256 (2020).
+
 The calculation procedures are very simple and you may find that some parts of this algorithm, code or script are not effecient.
 You can change these accordingly after you have understood the purpose of each step.
-
-Please note that an updated approach to incorporate self-energies into the calculation of the g-factors is presented in our recent paper
-- npj Computational Materials, 7, 198 (2021). 
 
 1) DFT level using QuantumESPRESSO-6.1
 
