@@ -1,0 +1,45 @@
+#!/bin/bash
+# Queue (hour, day, week)
+#BSUB -q scalable
+# Number of slots
+#BSUB -n 48
+# Slots per node (32 = fat nodes)
+#BSUB -R "span[ptile=24]"
+# Shared memory in MB 
+#BSUB -R "rusage[mem=240000]"      
+# Uncomment (remove one #) to request exclusive acccess to a node
+##BSUB -x 
+# Use openmpi
+#BSUB -a openmpi
+# Job duration in hours
+#BSUB -W 48:00
+# Job name
+#BSUB -J "parabandsWTe2"
+# Job output file
+#BSUB -o lsf%J.o
+# Job error file
+#BSUB -e lsf%J.e
+# Load environment module (old system)
+#module load hpc/intel_parallel_studio hpc/openmpi_intel hpc/espresso 
+# Load environment module (new system)
+export OMP_NUM_THREADS=1
+export HDF5_USE_FILE_LOCKING=FALSE
+module purge
+module use /opt/apps/util/easybuild/modules/all
+#module load QuantumESPRESSO/6.2-intel-2018a
+#module load BerkeleyGW/2.0.0-intel-2018b_elpa
+module load BerkeleyGW/2.0.0-intel-2018b_elpa_hdf1.8
+#module load Python
+
+PW="pw.x"
+PW2BGW="pw2bgw.x"
+PARABANDS="parabands.cplx.x"
+#AVERAGE="average.py"
+PP="pp.x"
+# put argument for number of procs here too if needed, e.g. -n 8
+MPIRUN="mpirun"
+
+mpirun -np 48 $PARABANDS < parabands.inp > parabands.out
+#hdf2wfn.x BIN WFN_out.h5 WFN_out.bin
+hdf2wfn.x BIN WFN_out.h5 WFN_out
+
