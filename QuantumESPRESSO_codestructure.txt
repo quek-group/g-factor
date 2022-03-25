@@ -1,0 +1,76 @@
+-pwscf.f90
+
+ -read input file
+ -run_pwscf.f90 (normally not driver mode)
+  -electron.f90 (scf)
+  -non_scf.f90
+   (-orbm_kubo)
+   -c_bands_nscf  (in c_bands.f90)
+     k_loop: ik in (K+kx, K+ky, K)
+     -diag_bands.f90 (in c_bands.f90)
+      -diag_bands_k (in c_bands.f90)
+       CG
+       Davidson(CALL cegterg)
+        CALL h_psi( npwx, npw, nvec, psi, hpsi )
+         CALL calbec
+
+      if (ik is K 3) then
+       <evc(K)|evc(K+kx)>=R+I*i
+       a = (R^2+I^2-1)/2
+       dkx = dky =
+       BerryCurv= % check with python result % checked and that is correct
+       call h_psi compare with E_k psi % checked and h_psi is indeed H_k u_nk
+       m=
+
+      else
+       save evc(K+kx) and evc(K+ky)     
+      endif  
+
+     end k_loop
+
+
+*************************
+K+qx
+K+qy
+K
+****************
+Modules/recvec.f90   gvectors  ngm=38417
+     INTEGER :: gstart = 2 ! index of the first G vector whose module is > 0
+                           ! Needed in parallel execution: gstart=2 for the
+                           ! proc that holds G=0, gstart=1 for all others
+
+PW/src/pwcom.f90:MODULE klist
+       igk_k(:,:),&       ! index of G corresponding to a given index of k+G
+       ngk(:)             ! number of plane waves for each k point
+MODULE wvfct
+       nbndx,            &! max number of bands use in iterative diag
+       nbnd,             &! number of bands
+
+c_bands.f90:
+             CALL cegterg ( npw, npwx, nbnd, nbndx, npol, evc, ethr, &
+                         okvan, et(1,ik), btype(1,ik), &
+                         notconv, lrot, dav_iter )
+
+SUBROUTINE cegterg( npw, npwx, nvec, nvecx, npol, evc, ethr, &
+                    uspp, e, btype, notcnv, lrot, dav_iter )
+  CALL h_psi( npwx, npw, nvec, psi, hpsi )
+  COMPLEX(DP), ALLOCATABLE :: psi(:,:,:), hpsi(:,:,:), spsi(:,:,:)
+
+SUBROUTINE h_psi( lda, n, m, psi, hpsi )
+  ! ... input:
+  ! ...    lda   leading dimension of arrays psi, spsi, hpsi
+  ! ...    n     true dimension of psi, spsi, hpsi
+  ! ...    m     number of states psi
+  ! ...    psi
+  !
+  ! ... output:
+  ! ...    hpsi  H*psi
+
+  INTEGER, INTENT(IN)      :: lda, n, m
+  COMPLEX(DP), INTENT(IN)  :: psi(lda*npol,m)
+  COMPLEX(DP), INTENT(OUT) :: hpsi(lda*npol,m)
+
+SUBROUTINE h_psi_( lda, n, m, psi, hpsi )
+  USE becmod,   ONLY : bec_type, becp, calbec
+     CALL calbec ( n, vkb, psi, becp, m )
+
