@@ -1,0 +1,10 @@
+&input_pw2bgw
+   prefix = 'MoS2'
+   real_or_complex = 2
+   wfng_flag = .true.
+   wfng_file = 'wfn.complex'
+   wfng_kgrid = .true.
+   wfng_nk1 = 12
+   wfng_nk2 = 12
+   wfng_nk3 = 1
+/
