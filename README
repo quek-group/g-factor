@@ -1,3 +1,17 @@
+Work done for this code was performed in the National University of Singapore (NUS).
+We ask that users of the XAF-GW method or of this code should cite the following reference:
+
+Phys Rev Research 2, 033256 (2020)
+
+QuantumESPRESSO code is used in conjunction with this g-factor code, please also cite the appropriate references for the QuantumESPRESSO code.
+QuantumESPRESSO is licensed under GNU GENERAL PUBLIC LICENSE
+
+Author: Xuan Fengyuan (c2dxf@nus.edu.sg)
+Contact: Su Ying Quek (phyqsy@nus.edu.sg)
+
+======================================================================================
+Instructions
+======================================================================================
 This folder includes instructions for g-factor calculation on DFT and GW level.
 The calculation procedures are very simple and you may find some parts of the algorithm, code and script are not effecient.
 You can change accordingly after you understand the purpose of each step.
