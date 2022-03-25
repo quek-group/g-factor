@@ -1,0 +1,9 @@
+input_wfn_file WFN_in 
+
+output_wfn_file WFN_out.h5 
+
+vsc_file VSC
+
+vkb_file VKB
+
+number_bands 4000
