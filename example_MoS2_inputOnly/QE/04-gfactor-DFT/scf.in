@@ -1,0 +1,48 @@
+&CONTROL
+   prefix = 'MoS2'
+   calculation = 'scf'
+   restart_mode = 'from_scratch'
+   wf_collect = .true.
+   tstress = .true.
+   tprnfor = .true.
+   outdir = './'
+   wfcdir = './'
+   pseudo_dir = './'
+   nstep = 200
+/
+
+&SYSTEM
+   ibrav=0
+   celldm(1)=5.971534553626d0
+   nat = 3
+   ntyp = 2
+   ecutwfc = 60.0
+/
+
+&ELECTRONS
+   electron_maxstep = 200
+   conv_thr = 1.0d-10
+   mixing_mode = 'plain'
+   mixing_beta = 0.7
+   mixing_ndim = 8
+   diagonalization = 'david'
+   diago_david_ndim = 4
+   diago_full_acc = .true.
+/
+
+ATOMIC_SPECIES
+  Mo 95.940000d0 Mo.UPF
+  S  32.065000d0 S.UPF
+
+CELL_PARAMETERS {alat}
+  1.000000000000d0  0.000000000000d0  0.000000000000d0
+ -0.500000000000d0  0.866025403784d0  0.000000000000d0
+  0.000000000000d0  0.000000000000d0  6.012658227848d0
+
+ATOMIC_POSITIONS {crystal}
+Mo       0.333333333   0.666666667   0.500000000
+S        0.666666667   0.333333333   0.417199842
+S        0.666666667   0.333333333   0.582800158
+
+K_POINTS {automatic}
+ 21 21 1 0 0 0
