@@ -4,7 +4,7 @@ You can change accordingly after you understand the purpose of each step.
 
 1) DFT level using QuantumESPRESSO-6.1
 
-Our target is to calculate Eq.10 of Ref [arXiv:2002.11993], where the du/dk is evalated in Eq.12
+Our target is to calculate Eq.10 of Ref [Phys Rev Research 2, 033256 (2020)], where the du/dk is evalated in Eq.12
 <du/dk|x[Hk-Enk]|du/dk>
 |du/dk> = (exp^{-i theta}|k+q> -|k>)/q
 exp^{i theta} = <k|k+q>/|<k|k+q>|
