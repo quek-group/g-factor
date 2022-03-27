@@ -28,7 +28,7 @@ d, QE/04-outer-normalized/script.lsf
 e, 08-sigma-outer/
    scissors2eqp.x 08-sigma-outer/WFN_outer 0 0 0 0 0 0
    mv eqp.dat eqp_outer.dat
-f, 07-epsilon/bgw.pbs
+f, 07-epsilon/bgw.pbs (remember to link the corresponding WFN file from 03-wfnqs/ and parabands/)
 g, rerun QE/04-gfactor-DFT with the new COHSEX eigenvalues
 h, 08-sigma-outer/
    check the outputs:CBM_sigma_hp.log VBM_sigma_hp.log 
