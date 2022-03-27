@@ -1,0 +1,53 @@
+#!/bin/bash
+
+# example test script using the internal dev queue 
+# (not more than two nodes, not more than one hour)
+
+#PBS -N MoS2exp
+#PBS -q normal
+#PBS -P 11001408 
+#PBS -l walltime=24:00:00
+#PBS -l select=50:ncpus=24:mpiprocs=24:ompthreads=1:mem=96GB
+
+cd $PBS_O_WORKDIR
+export OMP_NUM_THREADS=1
+module purge
+#module load quantum-espresso/5.4.0/gpu
+#module load quantum-espresso/5.4.0/parallel
+#module load QuantumESPRESSO/6.3-intel-2018b
+#module load quantum-espresso/5.4.0/mpi+openmp
+#module load BerkeleyGW/1.2.0-intel-2017a
+module load BerkeleyGW/2.0.0-intel-2017c
+
+PW="pw.x"
+PW2BGW="pw2bgw.x"
+#SURFACE="surface.x"
+#AVERAGE="average.py"
+PP="pp.x"
+EPSILON="epsilon.cplx.x"
+SIGMA="sigma.cplx.x"
+EQP="eqp.py"
+
+export OMP_NUM_THREADS=1
+# put argument for number of procs here too if needed, e.g. -n 8
+MPIRUN="mpirun -np 1200"
+
+#
+#cd ./07-addall_fine-28e
+#$MPIRUN $EPSILON &> ./epsilon.out
+#cd ..
+#
+#cd ./07-addall-28e
+$MPIRUN $EPSILON &> ./epsilon.out
+cd ..
+#
+cd ./08-sigma
+$MPIRUN $SIGMA  &> ./sigma.out
+cd ../08-sigma-outer
+$MPIRUN $SIGMA  &> ./sigma.out
+cp sigma_hp.log CBM_sigma_hp.log
+ln -snf ../QE/04-outer-normalized/WFN_after_VBM.complex WFN_outer
+rm vxc.dat x.dat
+$MPIRUN $SIGMA  &> ./sigma.out
+cp sigma_hp.log VBM_sigma_hp.log
+#cd ..
