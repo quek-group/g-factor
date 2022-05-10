@@ -1,45 +1,4 @@
-#!/bin/bash
-# Queue (hour, day, week)
-#BSUB -q day_bigmem
-# Number of slots
-#BSUB -n 8
-# Slots per node (32 = fat nodes)
-#BSUB -R "span[ptile=8]"
-# Shared memory in MB 
-#BSUB -R "rusage[mem=160000]"      
-# Uncomment (remove one #) to request exclusive acccess to a node
-##BSUB -x 
-# Use openmpi
-#BSUB -a openmpi
-# Job duration in hours
-#BSUB -W 48:00
-# Job name
-#BSUB -J "WTe204"
-# Job output file
-#BSUB -o lsf%J.o
-# Job error file
-#BSUB -e lsf%J.e
-# Load environment module (old system)
-#module load hpc/intel_parallel_studio hpc/openmpi_intel hpc/espresso 
-# Load environment module (new system)
-module purge
-module use /opt/apps/util/easybuild/modules/all
-#module load BerkeleyGW/2.0.0-intel-2018b
-#module load QuantumESPRESSO/5.4.0-intel-2016.01
-#module load QuantumESPRESSO/6.2-intel-2017b
-module load BerkeleyGW/2.1.0-intel-2019b-Python-3.7.4
 
-PW="pw.x"
-PW2BGW="pw2bgw.x"
-#SURFACE="surface.x"
-#AVERAGE="average.py"
-PP="pp.x"
-
-export OMP_NUM_THREADS=1
-# put argument for number of procs here too if needed, e.g. -n 8
-MPIRUN="mpirun -np 31"
-
-#generate_vdW_kernel_table.x
 ./writedudk.py WFN_kkxky.h5 WFN_before.h5 WFN_tempout.h5 WFN_after.h5 > CBM_write.out
 rm WFN_tempout.h5
 mv WFN_after.h5 WFN_after_CBM.h5
