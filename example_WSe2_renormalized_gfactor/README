@@ -1,6 +1,12 @@
 This is an example for Monolayer WSe2 intrinsic and renormalized gfactor for valence and conduction band at K, using the GPP approximation for self-energy.
+
 The intrinsic g-factor, using GPP approximation in the energy depedence of self-energy, is calculated in a similar way as the static COHSEX g-factor, which is shown in example_MoS2_inputOnly.
+Basically we need to calculate g^intrinsic = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
+The first part "<du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>" can be calculated using our modified QE code "c_bands.f90" with the GW quasiparticle energy.
+The second part "<du/dk|x[Sigma-Vxc]|du/dk>" can be calculated using the "outer corrections" flag in BerkeleyGW package where we put the du/dk in the WFN_outer.
 The renormalized gfactor is then defined in the Eq 8 of "npj Computational Materials, 7, 198 (2021)".
+
+Detail instructions is listed below:
 
 1) First we calculate the intrinsic g factor, with GPP approximation of quasiparticle self-energy:
 
