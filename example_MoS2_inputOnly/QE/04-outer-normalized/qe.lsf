@@ -1,44 +1,9 @@
-#!/bin/bash
-# Queue (hour, day, week)
-#BSUB -q day_bigmem
-# Number of slots
-#BSUB -n 32
-# Slots per node (32 = fat nodes)
-#BSUB -R "span[ptile=32]"
-# Shared memory in MB 
-#BSUB -R "rusage[mem=640000]"      
-# Uncomment (remove one #) to request exclusive acccess to a node
-##BSUB -x 
-# Use openmpi
-#BSUB -a openmpi
-# Job duration in hours
-#BSUB -W 48:00
-# Job name
-#BSUB -J "04p2"
-# Job output file
-#BSUB -o lsf%J.o
-# Job error file
-#BSUB -e lsf%J.e
-# Load environment module (old system)
-#module load hpc/intel_parallel_studio hpc/openmpi_intel hpc/espresso 
-# Load environment module (new system)
-module purge
-module use /opt/apps/util/easybuild/modules/all
-#module load QuantumESPRESSO/6.3-intel-2018b
-#module load QuantumESPRESSO/5.4.0-intel-2016.01
+
 module load QuantumESPRESSO/6.3-intel-2018b
 
 PW="pw.x"
 PW2BGW="pw2bgw.x"
-#SURFACE="surface.x"
-#AVERAGE="average.py"
-PP="pp.x"
 
-export OMP_NUM_THREADS=1
-# put argument for number of procs here too if needed, e.g. -n 8
-MPIRUN="mpirun -np 31"
-
-#generate_vdW_kernel_table.x
 $MPIRUN $PW -nk 31 -in ./pre_in &> ./pre_out
 $MPIRUN $PW2BGW -in ./in_pw2bgw &> ./out_pw2bgw
 rm *.wfc*
