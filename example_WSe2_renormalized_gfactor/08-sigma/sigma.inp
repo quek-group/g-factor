@@ -1,0 +1,14 @@
+number_bands 3999
+
+band_index_min 11
+band_index_max 15
+
+screening_semiconductor
+
+cell_slab_truncation
+
+subsample
+begin kpoints
+  0.333333333  0.333333333  0.000000000   1.0
+end
+eqp_outer_corrections
