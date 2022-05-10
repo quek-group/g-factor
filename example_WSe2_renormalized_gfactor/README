@@ -1,5 +1,6 @@
 This is an example for Monolayer WSe2 intrinsic and renormalized gfactor for valence and conduction band at K, using the GPP approximation for self-energy.
-The intrinsic and renormalized gfactor is defined in the Eq 8 of "npj Computational Materials, 7, 198 (2021)".
+The intrinsic g-factor, using GPP approximation in the energy depedence of self-energy, is calculated in a similar way as the static COHSEX g-factor, which is shown in example_MoS2_inputOnly.
+The renormalized gfactor is then defined in the Eq 8 of "npj Computational Materials, 7, 198 (2021)".
 
 1) First we calculate the intrinsic g factor, with GPP approximation of quasiparticle self-energy:
 
@@ -8,21 +9,21 @@ a, Perform SCF calculation
 b, Calculate the wave functions needed in a standard GW (GPP) epsilon and sigma calculation.
    QE/03-wfnqs/
    QE/parabands/
-c, To calculate <du/dk|x[Sigma-Vxc]|du/dk>, we first alculate du/dk and save it to "WFN_kkxky.h5"
+c, To calculate <du/dk|x[Sigma-Vxc]|du/dk>, we first calculate the wave function at K, K+dkx and K+dky and save it to "WFN_kkxky.h5"
    QE/04-dudk/
    wfn2hdf.x BIN wfn.complex WFN_kkxky.h5
    cp WFN_kkxky.h5 ../04-outer-normalized/
-d, Construct the outer wave functions using "WFN_kkxky.h5" and python script "writedudk.py" (for conduction band) and "writedudk_V.py" (for valence band)
-   QE/04-outer-normalized/script.lsf
-   We will obtain WFN_after_CBM.complex and WFN_after_VBM.complex, and link them to 08-sigma-outer/WFN_outer 
+d, Construct the outer wave functions (du/dk) using "WFN_kkxky.h5" and the python script "writedudk.py" (for conduction band) and "writedudk_V.py" (for valence band)
+   QE/04-outer-normalized/script.sh
+   After this step We will obtain WFN_after_CBM.complex and WFN_after_VBM.complex, and link them to 08-sigma-outer/WFN_outer 
 e, 08-sigma-outer/
    scissors2eqp.x 08-sigma-outer/WFN_outer 0 0 0 0 0 0
    mv eqp.dat eqp_outer.dat
 f, Peform standard epsilon and sigma (GPP) calculation (using the WFN file from QE/03-wfnqs and QE/parabands).
    07-epsilon/
-   08-sigma/
+   08-sigma/ (the sigma_hp.log file from this step will be used in the renormalized g-factor calculation.)
 g, run QE/04-gfactor-DFT with the new GW(GPP) eigenvalues to get : <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>
-h, 08-sigma-outer/
+h, 08-sigma-outer/script.sh
    check the outputs:CBM_sigma_hp.log VBM_sigma_hp.log 
    These are to obtain: <du/dk|x[Sigma-Vxc]|du/dk> (remember multiply back the normalization factor from QE/04-outer-normalized/C(V)BM_write.out)
    Use these results together with the results from step-g, we get intrinsic g-factor
