@@ -1,53 +1,39 @@
-This is an example for Monolayer MoS2 gfactor at K.
+This is an example for Monolayer WSe2 intrinsic and renormalized gfactor for valence and conduction band at K, using the GPP approximation for self-energy.
+The intrinsic and renormalized gfactor is defined in the Eq 8 of "npj Computational Materials, 7, 198 (2021)".
 
-1) If you only want the DFT g factor, run QE/04-gfactor-DFT with the modified QE-6.1 (c_bands.f90)(serial version)
-   If you need SOC, use soc_c_bands.f90
-   Remember to change the band index ("iiiv" in c_bands.f90 or soc_c_bands.f90) before compiliing.
-   For example, if you want to calculate VBM, then set the following in c_bands.f90 before compiling : 
-   iiiv=NINT(nelec/2)+0
-   If you want to calculate CBM, then set:
-   iiiv=NINT(nelec/2)+1
-   If you want to calculate CBM+1, then set:
-   iiiv=NINT(nelec/2)+2
-   (Currently this compiling process for different band index is not efficient)
+1) First we calculate the intrinsic g factor, with GPP approximation of quasiparticle self-energy:
 
-   (For very large system like 4x4 supercell of WSe2, the serial SOC calculation may fail due to large io files in disk.
-    You can add flag "disk_io=none" in QE input under "CONTROL" list.)
-
-2) If you need COHSEX g factor, you need to run all the folders:
-
-a, QE/01-scf/scf.lsf
-b, QE/04-outer-normalized/qe.lsf
-   QE/03-wfnqs
-   QE/parabands/parabands.lsf
-   QE/04-dudk
-c, QE/04-dudk/
+a, Perform SCF calculation
+   QE/01-scf/
+b, Calculate the wave functions needed in a standard GW (GPP) epsilon and sigma calculation.
+   QE/03-wfnqs/
+   QE/parabands/
+c, To calculate <du/dk|x[Sigma-Vxc]|du/dk>, we first alculate du/dk and save it to "WFN_kkxky.h5"
+   QE/04-dudk/
    wfn2hdf.x BIN wfn.complex WFN_kkxky.h5
    cp WFN_kkxky.h5 ../04-outer-normalized/
-d, QE/04-outer-normalized/script.lsf
+d, Construct the outer wave functions using "WFN_kkxky.h5" and python script "writedudk.py" (for conduction band) and "writedudk_V.py" (for valence band)
+   QE/04-outer-normalized/script.lsf
+   We will obtain WFN_after_CBM.complex and WFN_after_VBM.complex, and link them to 08-sigma-outer/WFN_outer 
 e, 08-sigma-outer/
    scissors2eqp.x 08-sigma-outer/WFN_outer 0 0 0 0 0 0
    mv eqp.dat eqp_outer.dat
-f, 07-epsilon/bgw.pbs
-g, rerun QE/04-gfactor-DFT with the new COHSEX eigenvalues
+f, Peform standard epsilon and sigma (GPP) calculation (using the WFN file from QE/03-wfnqs and QE/parabands).
+   07-epsilon/
+   08-sigma/
+g, run QE/04-gfactor-DFT with the new GW(GPP) eigenvalues to get : <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>
 h, 08-sigma-outer/
    check the outputs:CBM_sigma_hp.log VBM_sigma_hp.log 
    These are to obtain: <du/dk|x[Sigma-Vxc]|du/dk> (remember multiply back the normalization factor from QE/04-outer-normalized/C(V)BM_write.out)
-   Use these results together with the results from step-g, we get COHSEX g-factor
+   Use these results together with the results from step-g, we get intrinsic g-factor
 
-<du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
+g^intrinsic = <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
 
-Be careful about the unit (Rydberg or eV)
-Remember to check the Berry curvature output from QE/04-outer-normalized/C(V)BM_write.out and QE/04-gfactor-DFT/DFT_C(V)BM_pre_out
 
------------------------------------------------------------------
-Appendix for hdf5 WFN format:
+2) Next, we calculate the renormalized g-factor
 
-You can first check the hdf5 WFN format using the following command:
-module load BerkeleyGW
-h5dump WFN.h5
-see QE/04-dudk/content.out for the output of 
-h5dump WFN_kkxky.h5
+g^intrinsic / g^renormalized = 1 - d Sig(E) / d E
 
-Then see python script 'QE/-outer-normalized/writedudk.py' for how to modify WFN.h5
-example usage can be found in QE/-outer-normalized/
+where "d Sig(E) / d E" can be found in the output file "sigma_hp.log" in the standard sigma calculation step in 08-sigma/.
+
+
