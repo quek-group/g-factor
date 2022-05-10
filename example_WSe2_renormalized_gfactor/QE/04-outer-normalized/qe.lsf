@@ -1,0 +1,21 @@
+module load QuantumESPRESSO/6.3-intel-2018b
+
+PW="pw.x"
+PW2BGW="pw2bgw.x"
+
+$MPIRUN $PW -nk 31 -in ./pre_in &> ./pre_out
+$MPIRUN $PW2BGW -in ./in_pw2bgw &> ./out_pw2bgw
+rm *.wfc*
+cd ../03-wfnqs
+mpirun -np 16 $PW -nk 4 -in ./pre_in &> ./pre_out
+mpirun -np 16 $PW -nk 4 -in ./pos_in &> ./pos_out
+mpirun -np 16 $PW2BGW -in ./in_pw2bgw &> ./out_pw2bgw
+rm *.wfc*
+cd ../parabands
+$MPIRUN $PW -nk 31 -in ./pre_in &> ./pre_out
+$MPIRUN $PW2BGW -in ./in_pw2bgw &> ./out_pw2bgw
+rm *.wfc*
+cd ../04-dudk
+mpirun -np 2 $PW -in ./pre_in &> ./pre_out
+mpirun -np 2 $PW2BGW -in ./in_pw2bgw &> ./out_pw2bgw
+rm *.wfc*
