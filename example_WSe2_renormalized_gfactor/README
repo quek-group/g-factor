@@ -44,7 +44,9 @@ g^intrinsic = <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>
 
 g^intrinsic / g^renormalized = 1 - d Sig(E) / d E
 
-where "d Sig(E) / d E" can be found in the output file "sigma_hp.log" in the standard sigma calculation step in 08-sigma/. 
-See Eq. 44 of PhysRevB 34, 5390 (1986)
+The output file, "sigma_hp.log", in the standard sigma calculation step in 08-sigma/ contains the quantity, Z_nk, which is defined as
+
+Z_nk = (1 - d Sig(E)/dE)^(-1) 
+(see Eq. 44 of PhysRevB 34, 5390 (1986))
 
 
