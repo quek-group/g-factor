@@ -1,15 +1,17 @@
 Work done for this code was performed in the National University of Singapore (NUS).
 
 This README file includes instructions for the calculation of g-factors at the DFT and GW (COHSEX) levels according to Phys Rev Research 2, 033256 (2020).
-(An example is provided in the folder example_MoS2_inputOnly/)
+(An example is provided in the folder example_MoS2_inputOnly/.)
 
-We ask that if you use or refer to this code for calculating g-factors (or Berry curvatures), that you please cite the following reference:
-
-Phys Rev Research 2, 033256 (2020)
-
-Please note that an updated approach to incorporate self-energies into the calculation of the g-factors is presented in our recent paper
+Please note that an updated approach to incorporate dynamical effects into the calculation of the g-factors is presented in our recent paper
 - npj Computational Materials, 7, 198 (2021). Here, dynamical effects are included in the GW g-factors. 
 (An example is provided in the folder example_WSe2_renormalized_gfactor/)
+
+We ask that if you use or refer to these codes for calculating g-factors (or Berry curvatures), that you please cite the following reference:
+
+Phys Rev Research 2, 033256 (2020) (mean field, static COHSEX)
+npj Computational Materials, 7, 198 (2021) (dynamical GW)
+
 
 QuantumESPRESSO code is used in conjunction with this g-factor code. 
 QuantumESPRESSO is licensed under GNU GENERAL PUBLIC LICENSE v2.0.
