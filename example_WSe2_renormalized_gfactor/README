@@ -1,4 +1,4 @@
-This is an example for Monolayer WSe2 intrinsic and renormalized gfactor for valence and conduction band at K, using the GPP approximation for self-energy.
+This is an example for the calculation of monolayer WSe2 intrinsic and renormalized gfactor for valence and conduction band at K, using the GPP approximation for self-energy.
 
 The intrinsic g-factor, using GPP approximation in the energy depedence of self-energy, is calculated in a similar way as the static COHSEX g-factor, which is shown in example_MoS2_inputOnly.
 Basically we need to calculate g^intrinsic = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
@@ -27,7 +27,9 @@ e, 08-sigma-outer/
    mv eqp.dat eqp_outer.dat
 f, Peform standard epsilon and sigma (GPP) calculation (using the WFN file from QE/03-wfnqs and QE/parabands).
    07-epsilon/
-   08-sigma/ (the sigma_hp.log file from this step will be used in the renormalized g-factor calculation.)
+   08-sigma/ 
+   (the sigma_hp.log file from this step will be used in the renormalized g-factor calculation.
+    The GW energies will be used in the next step.)
 g, run QE/04-gfactor-DFT with the new GW(GPP) eigenvalues to get : <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>
 h, 08-sigma-outer/script.sh
    check the outputs:CBM_sigma_hp.log VBM_sigma_hp.log 
@@ -41,6 +43,7 @@ g^intrinsic = <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>
 
 g^intrinsic / g^renormalized = 1 - d Sig(E) / d E
 
-where "d Sig(E) / d E" can be found in the output file "sigma_hp.log" in the standard sigma calculation step in 08-sigma/.
+where "d Sig(E) / d E" can be found in the output file "sigma_hp.log" in the standard sigma calculation step in 08-sigma/. 
+See Eq. 44 of PhysRevB 34, 5390 (1986)
 
 
