@@ -98,3 +98,13 @@ hdf2wfn.x BIN WFN_after_CBM.h5 WFN_after_CBM.complex
 
 <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
 
+3) GW g-factors
+
+The intrinsic g-factor, using the GPP approximation to the energy depedence of the self-energy, is calculated in a similar way as the static COHSEX g-factor, except that the Hamiltonian matrix elements and energies used are obtained with dynamical GW.
+Basically we need to calculate g^intrinsic = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
+The first part "<du/dk|x[Hk(DFT)-Enk(GW)]|du/dk>" can be calculated using our modified QE code "c_bands.f90" with the GW quasiparticle energy.
+The second part "<du/dk|x[Sigma-Vxc]|du/dk>" can be calculated using the "outer corrections" flag in BerkeleyGW package where we put the du/dk in the WFN_outer.
+
+The renormalized g-factor, which includes the dynamical effect from the QP self-energy, is defined in the Eq 8 of "npj Computational Materials, 7, 198 (2021)". 
+This renormalized g-factor accounts for the effect of changes in the self-energy with energy. 
+
