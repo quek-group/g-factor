@@ -107,4 +107,4 @@ The second part "<du/dk|x[Sigma-Vxc]|du/dk>" can be calculated using the "outer 
 
 The renormalized g-factor, which includes the dynamical effect from the QP self-energy, is defined in the Eq 8 of "npj Computational Materials, 7, 198 (2021)". 
 This renormalized g-factor accounts for the effect of changes in the self-energy with energy. 
-
+g^intrinsic / g^renormalized = 1 - d Sig(E) / d E
