@@ -65,7 +65,8 @@ The second term is reduced to:
 2Im <du/dkx |[Sigma-Vxc]| du/dky>
 
    a, Prepare WFN and WFNq. Perform the standard GW calculation to get Enk(GW). 
-      calculate <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> using the QE code (remember to replace Enk with GW values in c_bands.f90)
+      Calculate <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> using the QE code (remember to replace Enk with GW values in c_bands.f90, or we can simply use the Berry curvature multiplied by Enk(GW))
+      Next, we calculate <du/dk|x[Sigma-Vxc]|du/dk> using the part of BGW that computes the off-diagonal elements of the sigma matrix.
    b, Prepare a WFN_kkxky.h5. Be careful that the k-list order is different here : K, K+qx, K+qy
 
       K_POINTS crystal
@@ -74,7 +75,7 @@ The second term is reduced to:
       0.333353333  0.333323333  0.000000000   1.0
       0.333333333  0.333343333  0.000000000   1.0
 
-      remember after pw2bgw, transform the BIN format to hdf5 format by: wfn2hdf.x BIN WFN.complex WFN_kkxky.h5.
+      Remember: after pw2bgw, transform the BIN format to hdf5 format by: wfn2hdf.x BIN WFN.complex WFN_kkxky.h5.
    c, Prepare a WFN_after_C(V)BM.complex using python script 'writedudk.py'. 
       This script replaces the wave function coeffecient of band index 13 and 14 band at K by du/dkx and du/dky.
       the readin WFN_before.h5 is on the standard GW coarse grid (12x12 for TMD with subsample for example)
