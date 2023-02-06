@@ -89,7 +89,7 @@ rm WFN_tempout.h5
 mv WFN_after.h5 WFN_after_CBM.h5
 hdf2wfn.x BIN WFN_after_CBM.h5 WFN_after_CBM.complex % this has "band index 13 and 14 at K : du/dkx and du/dky"
 
-Please note that there is a quantity called the unit of k in writedudk.py, which needs to be modified for each system. Here is also where you can decide on the units of length. 
+Please note that there is a quantity called the unit of k ('unitk') in writedudk.py, which needs to be modified for each system. Here is also where you can decide on the units of length. 
 
 % We need to run this again to get WFN_after_VBM.complex % this has "band index 12 and 13 at K : du/dkx and du/dky"
 
