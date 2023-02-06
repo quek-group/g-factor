@@ -116,4 +116,5 @@ for ig in range(0,ngvec):
     fout2['wfns/coeffs'][13,0,igt,0]=fout['wfns/coeffs'][ib,0,igy,0]/math.sqrt(overlapyR)
     fout2['wfns/coeffs'][13,0,igt,1]=fout['wfns/coeffs'][ib,0,igy,1]/math.sqrt(overlapyR)
 
-print('Finished!')
+    print('Note that the unit of length in this code is Angstroms.')
+    print('Finished!')
