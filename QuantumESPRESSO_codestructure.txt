@@ -15,12 +15,11 @@
          CALL calbec
 
       if (ik is K 3) then
-       <evc(K)|evc(K+kx)>=R+I*i
-       a = (R^2+I^2-1)/2
-       dkx = dky =
+       <evc(K)|evc(K+kx)>=R+I*i % evc is the wavefunction variable u, to get Eq 12 in PRR 2020
+        dkx = dky =
        BerryCurv= % check with python result % checked and that is correct
-       call h_psi compare with E_k psi % checked and h_psi is indeed H_k u_nk
-       m=
+       call h_psi compare with E_k psi % checked and h_psi is indeed H_k u_nk % to get H_k^DFT dudk_y. 
+       m= % m is proportional to 2Im (dudk_x H_k dudk_y) [H_k is a NG x NG matrix, dudk_y is a vector with length equal to number of G vectors
 
       else
        save evc(K+kx) and evc(K+ky)     
