@@ -75,10 +75,10 @@ The second term is reduced to:
       0.333353333  0.333323333  0.000000000   1.0
       0.333333333  0.333343333  0.000000000   1.0
 
-      Remember: after pw2bgw, transform the BIN format to hdf5 format by: wfn2hdf.x BIN WFN.complex WFN_kkxky.h5.
+      Remember: After pw2bgw, transform the BIN format to hdf5 format by: wfn2hdf.x BIN WFN.complex WFN_kkxky.h5.
    c, Prepare a WFN_after_C(V)BM.complex using python script 'writedudk.py'. 
       This script replaces the wave function coeffecient of band index 13 and 14 band at K by du/dkx and du/dky.
-      the readin WFN_before.h5 is on the standard GW coarse grid (12x12 for TMD with subsample for example)
+      The readin WFN_before.h5 is on the standard GW coarse grid (12x12 for TMD with subsample for example)
       13 14 is for TMD where VBM = 13. For other materials, change it accordingly.
       Set ib to be Valence and Conduction band in 'writedudk.py' to get WFN_after_C(V)BM.complex.
       (ib = 12 for valence and 13 for conduction, this is due to python array start from 0)
@@ -87,14 +87,17 @@ The second term is reduced to:
 ./writedudk.py WFN_kkxky.h5 WFN_before.h5 WFN_tempout.h5 WFN_after.h5 > CBM_write.out
 rm WFN_tempout.h5
 mv WFN_after.h5 WFN_after_CBM.h5
-hdf2wfn.x BIN WFN_after_CBM.h5 WFN_after_CBM.complex
+hdf2wfn.x BIN WFN_after_CBM.h5 WFN_after_CBM.complex % this has "band index 13 and 14 at K : du/dkx and du/dky"
 
-      Be careful that in the output ' CBM_write.out' there is normalization factor at the end.
-      We use this to normalized the du/dk and we will need to take it into account in the final step of 2Im <du/dkx |[Sigma-Vxc]| du/dky>
+% We need to run this again to get WFN_after_VBM.complex % this has "band index 12 and 13 at K : du/dkx and du/dky"
+
+      Be careful that in the output ' CBM_write.out', there is a normalization factor at the end (last line). 
+      The BGW code expects all wavefunctions to be normalized. So here, we have normalized du/dkx and du/dky and the product of the normalization factors is given in the output.
+      We will need to take to multiply the results by the normalization factor in the final step of 2Im <du/dkx |[Sigma-Vxc]| du/dky>, since du/dkx and du/dky are not actually normalized to 1.
 
    d, Perform offdiag calculation using BGW for 2Im <du/dkx |[Sigma-Vxc]| du/dky>. 
-      link WFN_after_C(V)BM.complex to the WFN_outer
-      remember to get back the normalization factor, since du/dk has been normalized. We need the origianal du/dk.
+      Link WFN_after_C(V)BM.complex to WFN_outer
+      Remember to multiply by the normalization factor mentioned above.
       The GW g factor is then obtained by summing the two contributions in the equation:
 
 <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
