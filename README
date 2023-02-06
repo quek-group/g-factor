@@ -102,6 +102,8 @@ hdf2wfn.x BIN WFN_after_CBM.h5 WFN_after_CBM.complex % this has "band index 13 a
 
 <du/dk|x[Hk(GW)-Enk(GW)]|du/dk> = <du/dk|x[Hk(DFT)-Enk(GW)]|du/dk> + <du/dk|x[Sigma-Vxc]|du/dk>
 
+NOTE: In all of the above, Rydberg units are used, except that the unit of length was in Angstroms. We need to divide by 0.53^2. Propose to change the code in future. 
+
 3) GW g-factors
 
 The intrinsic g-factor, using the GPP approximation to the energy depedence of the self-energy, is calculated in a similar way as the static COHSEX g-factor, except that the Hamiltonian matrix elements and energies used are obtained with dynamical GW.
